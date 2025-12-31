@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<title>Шинэ жилийн бэлэг 🎁</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+    url("bg.png") center/cover no-repeat;
+  overflow:hidden;
+  font-family:"Segoe UI", Arial, sans-serif;
+}
+
+/* ❄ ЦАС */
+.snow{
+  position:fixed;
+  top:-10px;
+  width:6px;
+  height:6px;
+  background:white;
+  border-radius:50%;
+  opacity:.8;
+  animation:fall linear infinite;
+}
+@keyframes fall{to{transform:translateY(110vh)}}
+
+/* 3D */
+.scene{perspective:1000px}
+
+.gift{
+  position:relative;
+  width:220px;
+  height:220px;
+  transform:rotateX(10deg);
+  cursor:pointer;
+}
+
+/* хайрцаг */
+.box{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:160px;
+  background:linear-gradient(145deg,#d4af37,#b8962e);
+  border-radius:10px;
+  box-shadow:0 30px 40px rgba(0,0,0,.4);
+  transition:1s ease;
+}
+
+/* таг */
+.lid{
+  position:absolute;
+  top:0;
+  width:100%;
+  height:55px;
+  background:linear-gradient(145deg,#f7dc7a,#c9a227);
+  border-radius:10px;
+  transform:translateY(-15px);
+  transform-origin:center bottom;
+  transition:1s ease;
+}
+
+/* 👉 НЭЭГДЭХ ҮЕД: таг + хайрцаг хоёулаа алга болно */
+.gift.open .lid{
+  transform:translateY(-220px) rotateX(80deg);
+  opacity:0;
+}
+.gift.open .box{
+  transform:translateY(120px) scale(.6);
+  opacity:0;
+}
+
+/* тууз */
+.ribbon-v,.ribbon-h{
+  position:absolute;
+  background:linear-gradient(#b30000,#7a0000);
+  transition:.8s ease;
+}
+.gift.open .ribbon-v,
+.gift.open .ribbon-h{
+  opacity:0;
+}
+.ribbon-v{
+  left:50%;top:-15px;width:22px;height:100%;
+  transform:translateX(-50%);
+}
+.ribbon-h{
+  top:75px;width:100%;height:22px;
+}
+
+/* 📜 МЭНДЧИЛГЭЭ (ДЭЭД ТАЛД) */
+.message{
+  position:absolute;
+  top:-260px;
+  left:50%;
+  transform:translateX(-50%) scale(.85);
+  width:380px;
+  padding:26px;
+  background:linear-gradient(135deg,#f3b6c6,#f7cdda);
+  border-radius:6px;
+  color:#4a1f2c;
+  font-size:18px;
+  line-height:1.5;
+  text-align:center;
+  opacity:0;
+  z-index:10;
+  box-shadow:0 15px 30px rgba(0,0,0,.4);
+  transition:1s ease;
+}
+
+/* хуучин цаас эффект */
+.message::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,.15),
+    rgba(255,255,255,.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* ил гарах */
+.gift.open .message{
+  opacity:1;
+  transform:translateX(-50%) scale(1) rotate(-1deg);
+}
+
+/* 🎆 ОЛОН ӨНГӨТ САЛЮТ */
+.firework{
+  position:fixed;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:boom 1s ease-out forwards;
+}
+@keyframes boom{
+  to{
+    transform:translate(var(--x),var(--y));
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene">
+  <div class="gift" id="gift">
+
+    <div class="message">
+      <strong>Шинэ он айсуй!</strong><br><br>
+      Өнгөрсөн жилийн алдаа оноог ардаа үлдээн,<br>
+      Өөдрөг хүсэл, их амжилт,<br>
+      Эрүүл энх, аз жаргалаар дүүрэн<br>
+      Шинэ жилийг угтаарай.<br><br>
+      2026 он таньд инээд хөөр,<br>
+      баяр баяслыг хүсье.<br><br>
+      🎉✨ Мөрөөдөл биелсэн гайхалтай жил байх болтугай! 🎉✨
+    </div>
+
+    <div class="lid"></div>
+    <div class="box"></div>
+    <div class="ribbon-v"></div>
+    <div class="ribbon-h"></div>
+  </div>
+</div>
+
+<script>
+/* ❄ цас */
+for(let i=0;i<45;i++){
+  let s=document.createElement("div");
+  s.className="snow";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=4+Math.random()*6+"s";
+  document.body.appendChild(s);
+}
+
+/* 🎆 олон өнгөт салют */
+const colors=["#ff004c","#ffd500","#00eaff","#00ff6a","#ff7aff"];
+function firework(x,y){
+  for(let i=0;i<40;i++){
+    let f=document.createElement("div");
+    f.className="firework";
+    f.style.left=x+"px";
+    f.style.top=y+"px";
+    f.style.background=colors[Math.floor(Math.random()*colors.length)];
+    f.style.setProperty("--x",(Math.random()*300-150)+"px");
+    f.style.setProperty("--y",(Math.random()*300-150)+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+}
+
+/* click */
+const gift=document.getElementById("gift");
+gift.addEventListener("click",e=>{
+  gift.classList.add("open");
+  firework(e.clientX,e.clientY);
+});
+</script>
+
+</body>
+</html>
